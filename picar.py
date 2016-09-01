@@ -111,12 +111,10 @@ def makeMove(direction, angle):
     return
 
 try:
-
-    
     s = socket.socket()         # Create a socket object
 
     s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    # s.bind(('192.168.43.247',  5001))        # Bind to the port
+    #raspberry pi ip
     s.bind(('192.168.2.166',  4568))        # Bind to the port
 
 
@@ -128,38 +126,25 @@ try:
     i = 0
     while True:
         data = c.recv(1024)
-        #print data
-       # print len(data)
         if len(data) == 3:
-            #print 'yon: ', data[0]
-            #print 'aci: ', data[2]
-            #print 'len: ', len(data)
             makeMove (data[0], int(data[2]))
             i+=1
-            #   print i
             if i % 10 == 0:     #her 10 komutta 1 defa cpu sicakligini kontrol et.
                 temperature = float(getCPUtemperature())
-                #print temperature
                 if temperature > temperature_treshold:
                     print 'CPU cok isindi. Program kapatiliyor.'
                     stop(r1, r2, l1, l2)
                     GPIO.cleanup()
                     c.close()        
                     sys.exit()
-            #time.sleep(0.2)
         elif data=='x':
-            #print 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
             makeMove (data[0], 0)
-
-
         elif data=='e':
             print "exit",addr
             stop(r1, r2, l1, l2)
             GPIO.cleanup()
             c.close()
             sys.exit()
-            
-    
 except KeyboardInterrupt:
         print('You pressed Ctrl+C!')
         stop(r1, r2, l1, l2)
