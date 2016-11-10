@@ -144,7 +144,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
             Log.e("Button init", e.getMessage());
         }
-
     }
 
     @Override
